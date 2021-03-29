@@ -7,17 +7,21 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "@types/classnames": "^2.2.11",
     "@types/jest": "^26.0.21",
     "@types/node": "^12.20.6",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.7",
     "apollo": "^2.32.5",
     "autoprefixer": "^10.2.5",
+    "classnames": "^2.2.6",
     "graphql": "^15.5.0",
     "postcss": "^8.2.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
     "react-hook-form": "^6.15.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -31,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "apollo:codegen": "rm -rf src/__generated apollo client:codegen src/__generated --target=typescript --outputFlat"
+    "apollo:codegen": "rm -rf src/__generated && apollo client:codegen src/__generated --target=typescript --outputFlat"
   },
   "eslintConfig": {
     "extends": [
