@@ -79,7 +79,7 @@ export const Signup = () => {
         <title>Signup | Nuber eats</title>
       </Helmet>
       <div className='w-full max-w-screen-sm flex flex-col items-center px-5'>
-        <img src={nuberLogo} className='w-60 mb-5' />
+        <img src={nuberLogo} alt='' className='w-60 mb-5' />
         <h4 className='w-full font-semibold text-left text-3xl mb-10'>
           Let's get started
         </h4>
@@ -90,7 +90,7 @@ export const Signup = () => {
           <input
             ref={register({
               required: 'Email is required',
-              pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
             name='email'
             required
