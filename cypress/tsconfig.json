@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "baseUrl": "../mode_modules",
+        "types": [
+            "cypress"
+        ]
+    },
+    "include": [
+        "./**/*.*"
+    ]
+}
