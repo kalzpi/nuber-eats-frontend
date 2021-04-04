@@ -19,6 +19,8 @@ export const Button: React.FC<IButtonProps> = ({
       : 'bg-gray-300 pointer-events-none'
   );
   return (
-    <button className={className}>{loading ? 'Loading' : actionText}</button>
+    <button role='button' className={className}>
+      {loading ? 'Loading' : actionText}
+    </button>
   );
 };

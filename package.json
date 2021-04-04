@@ -61,11 +61,14 @@
       "last 1 safari version"
     ]
   },
-  "jest":{
-    "collectCoverageFrom":[
+  "jest": {
+    "collectCoverageFrom": [
       "./src/components/**/*.tsx",
       "./src/pages/**/*.tsx",
       "./src/routers/**/*.tsx"
     ]
+  },
+  "devDependencies": {
+    "mock-apollo-client": "^1.0.0"
   }
 }
