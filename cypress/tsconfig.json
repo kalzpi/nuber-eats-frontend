@@ -3,8 +3,10 @@
         "allowJs": true,
         "baseUrl": "../mode_modules",
         "types": [
-            "cypress"
-        ]
+            "cypress",
+            "@testing-library/cypress"
+        ],
+        "outDir": "#"
     },
     "include": [
         "./**/*.*"
