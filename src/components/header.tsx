@@ -7,6 +7,7 @@ import nuberLogo from '../images/logo.svg';
 
 export const Header: React.FC = () => {
   const { data } = useMe();
+  console.log(data);
   return (
     <Fragment>
       {!data?.me.isVerified && (

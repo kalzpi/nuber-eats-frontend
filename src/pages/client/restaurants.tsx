@@ -1,9 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -15,11 +18,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryParts
       }
     }
     restaurants(input: $restaurantsInput) {
@@ -28,17 +27,12 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalItems
       items {
-        id
-        name
-        coverImage
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 interface IFormProps {
@@ -74,6 +68,9 @@ export const Restaurants: React.FC = () => {
   };
   return (
     <div>
+      <Helmet>
+        <title>Home | Nuber Eats</title>
+      </Helmet>
       <form
         onSubmit={handleSubmit(onSearchSubmit)}
         className='bg-gray-800 w-full py-40 flex justify-center items-center'
@@ -90,16 +87,18 @@ export const Restaurants: React.FC = () => {
         <div className='max-w-screen-xl mx-auto mt-8'>
           <ScrollContainer className='scroll-container flex md:justify-around max-w-sm md:max-w-full mx-auto'>
             {data?.allCategories.categories?.map((category) => (
-              <div
-                key={category.id}
-                className='flex flex-col group items-center cursor-pointer mx-3'
-              >
+              <Link key={category.id} to={`/category/${category.slug}`}>
                 <div
-                  className='w-14 h-14 bg-cover opacity-70 group-hover:opacity-100 rounded-full'
-                  style={{ backgroundImage: `url(${category.coverImage})` }}
-                ></div>
-                <span className='text-sm mt-1'>{category.name}</span>
-              </div>
+                  key={category.id}
+                  className='flex flex-col group items-center cursor-pointer mx-3'
+                >
+                  <div
+                    className='w-14 h-14 bg-cover opacity-70 group-hover:opacity-100 rounded-full'
+                    style={{ backgroundImage: `url(${category.coverImage})` }}
+                  ></div>
+                  <span className='text-sm mt-1'>{category.name}</span>
+                </div>
+              </Link>
             ))}
           </ScrollContainer>
 
