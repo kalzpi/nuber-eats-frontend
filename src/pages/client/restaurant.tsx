@@ -26,7 +26,7 @@ const RESTAURANT_QUERY = gql`
 
 export const RestaurantDetail: React.FC = () => {
   const params = useParams<IRestaurantParams>();
-  console.log(params.id, typeof params.id);
+
   const { data, loading } = useQuery<restaurantQuery, restaurantQueryVariables>(
     RESTAURANT_QUERY,
     {
@@ -37,7 +37,6 @@ export const RestaurantDetail: React.FC = () => {
       },
     }
   );
-  console.log(data);
   return (
     <div>
       <div

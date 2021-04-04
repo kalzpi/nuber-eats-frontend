@@ -20,15 +20,7 @@ describe('Log In', () => {
   });
 
   it('can fill out the form', () => {
-    user.visit('/');
-    user.findByPlaceholderText(/email/i).type('react3@test.com');
-    user.findByPlaceholderText(/password/i).type('1234');
-    user.findByRole('button').should('not.have.class', 'pointer-events-none');
-    user.findByRole('button').click();
-    // todo can log in
-    user.window().its('localStorage.nuber-token').should('be.a', 'string');
-  });
-  it('sign up', () => {
-    user.visit('/signup');
+    // @ts-ignore
+    user.login('react3@test.com', '1234');
   });
 });

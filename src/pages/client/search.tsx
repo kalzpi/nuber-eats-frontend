@@ -39,7 +39,6 @@ export const Search: React.FC = () => {
   >(SEARCH_RESTAURANT);
   useEffect(() => {
     const query = location.search.split('?term=')[1];
-    console.log(query);
     if (!query) {
       return history.replace('/');
     }
@@ -64,7 +63,6 @@ export const Search: React.FC = () => {
     });
   };
 
-  console.log(data);
   const onNextPageClick = () => {
     setPage((cur) => cur + 1);
   };

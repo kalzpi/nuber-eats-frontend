@@ -62,7 +62,7 @@ export const Category: React.FC = () => {
   const onPreviousPageClick = () => {
     setPage((cur) => cur - 1);
   };
-  console.log(data, loading);
+
   return (
     <div>
       <Helmet>
