@@ -18,7 +18,7 @@ export const Restaurant: React.FC<IRestaurantProps> = ({
     <Link to={`restaurant/${id}`}>
       <div className='flex flex-col'>
         <div
-          className='py-28 bg-center mb-2'
+          className='py-28 bg-center bg-cover mb-2'
           style={{ backgroundImage: `url(${coverImage})` }}
         ></div>
         <h3 className='text-lg font-semibold'>{name}</h3>
