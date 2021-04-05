@@ -9,4 +9,12 @@
   @apply bg-lime-500 text-white py-3 mt-2 hover:bg-lime-600 transition-colors text-lg font-medium;
 }
 
+.container {
+  @apply max-w-screen-xl mx-auto;
+}
+
+.link {
+  @apply text-lime-600 hover:underline;
+}
+
 @tailwind utilities;
