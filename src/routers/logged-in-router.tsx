@@ -16,6 +16,8 @@ import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { MyRestaurants } from '../pages/owner/my-restaurants';
 import { CreateRestaurant } from '../pages/owner/create-restaurant';
+import { MyRestaurant } from '../pages/owner/my-restaurant';
+import { AddDish } from '../pages/owner/add-dish';
 
 const clientRoutes = [
   { path: '/', component: <Restaurants /> },
@@ -32,6 +34,8 @@ const commonRoutes = [
 const ownerRoutes = [
   { path: '/', component: <MyRestaurants /> },
   { path: '/create-restaurant', component: <CreateRestaurant /> },
+  { path: '/restaurant/:id', component: <MyRestaurant /> },
+  { path: '/restaurant/:restaurantId/add-dish', component: <AddDish /> },
 ];
 
 export const LoggedInRouter: React.FC = () => {
