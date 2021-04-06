@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
@@ -20,6 +20,7 @@ interface IAddDishForm {
   name: string;
   price: string;
   description: string;
+  [key: string]: string;
 }
 
 export const AddDish = () => {
@@ -31,6 +32,7 @@ export const AddDish = () => {
     errors,
     handleSubmit,
     formState,
+    setValue,
   } = useForm<IAddDishForm>({ mode: 'onChange' });
   const [createDishMutation, { loading }] = useMutation<
     createDish,
@@ -45,7 +47,11 @@ export const AddDish = () => {
   });
 
   const onSubmit = () => {
-    const { name, price, description } = getValues();
+    const { name, price, description, ...rest } = getValues();
+    const optionObjs = optionsNumber.map((theId) => ({
+      name: rest[`optionName-${theId}`],
+      extraPrice: +rest[`optionExtra-${theId}`],
+    }));
     createDishMutation({
       variables: {
         input: {
@@ -53,11 +59,23 @@ export const AddDish = () => {
           price: +price,
           description,
           restaurantId: +restaurantId,
+          options: optionObjs,
         },
       },
     });
     history.goBack();
   };
+
+  const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
+  const onAddOptionClick = () => {
+    setOptionsNumber((current) => [Date.now(), ...current]);
+  };
+  const onDeleteOptionClick = (optionId: number) => {
+    setOptionsNumber((cur) => cur.filter((id) => id !== optionId));
+    // setValue(`optionName-${optionId}`, '');
+    // setValue(`optionExtra-${optionId}`, '');
+  };
+
   return (
     <div className='container flex flex-col items-center mt-32'>
       <Helmet>
@@ -90,6 +108,41 @@ export const AddDish = () => {
           className='input'
           placeholder='Description'
         />
+        <div className='my-10'>
+          <h4 className='font-medium mb-3 text-lg'>Dish Options</h4>
+          <span
+            onClick={onAddOptionClick}
+            className='cursor-pointer text-white bg-gray-800 py-1 px-2 mt-4'
+          >
+            Add Dish Option
+          </span>
+          {optionsNumber.length !== 0 &&
+            optionsNumber.map((id) => (
+              <div key={id} className='mt-5'>
+                <input
+                  ref={register({ required: 'Option name is required' })}
+                  type='text'
+                  name={`optionName-${id}`}
+                  placeholder='Option name'
+                  className='py-2 px-4 focus:outline-none focus:border-gray-600 border-2'
+                />
+                <input
+                  ref={register}
+                  type='number'
+                  min={0}
+                  name={`optionExtra-${id}`}
+                  placeholder='Extra Price'
+                  className='py-2 px-4 focus:outline-none focus:border-gray-600 border-2'
+                />
+                <span
+                  onClick={() => onDeleteOptionClick(id)}
+                  className='cursor-pointer text-white bg-red-500 ml-3 py-1 px-2'
+                >
+                  Delete
+                </span>
+              </div>
+            ))}
+        </div>
         <Button
           actionText='Create Dish'
           loading={loading}

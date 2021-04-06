@@ -8,6 +8,7 @@ import {
 } from '../../__generated/myRestaurant';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { Dish } from '../../components/dish';
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($myRestaurantInput: MyRestaurantInput!) {
@@ -71,7 +72,18 @@ export const MyRestaurant = () => {
         <div className='mt-10'>
           {data?.myRestaurant.restaurant?.menu.length === 0 ? (
             <span className='text-xl mb-5'>Please upload a dish</span>
-          ) : null}
+          ) : (
+            <div className='grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10'>
+              {data?.myRestaurant.restaurant?.menu.map((item) => (
+                <Dish
+                  key={item.id}
+                  name={item.name}
+                  price={item.price}
+                  description={item.description}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </Fragment>
