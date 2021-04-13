@@ -166,7 +166,7 @@ export const RestaurantDetail: React.FC = () => {
       return;
     }
     const ok = window.confirm('You are about to place an order');
-    if (ok) {
+    if (ok && !placingOrder) {
       createOrderMutation({
         variables: {
           input: {
