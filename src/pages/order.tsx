@@ -1,16 +1,16 @@
-import { gql, useQuery, useSubscription } from '@apollo/client';
+import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
 import React, { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
 import { useMe } from '../hooks/useMe';
 import { getOrder, getOrderVariables } from '../__generated/getOrder';
+import { editOrder, editOrderVariables } from '../__generated/editOrder';
 import { OrderStatus, UserRole } from '../__generated/globalTypes';
 import {
   orderUpdates,
   orderUpdatesVariables,
 } from '../__generated/orderUpdates';
-import { pendingOrders } from '../__generated/pendingOrders';
 
 interface IParams {
   id: string;
@@ -29,6 +29,15 @@ const GET_ORDER_QUERY = gql`
   ${FULL_ORDER_FRAGMENT}
 `;
 
+const EDIT_ORDER_MUTATION = gql`
+  mutation editOrder($input: EditOrderInput!) {
+    editOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 const ORDER_SUBSCRIPTION = gql`
   subscription orderUpdates($input: OrderUpdateInput!) {
     orderUpdates(input: $input) {
@@ -41,6 +50,9 @@ const ORDER_SUBSCRIPTION = gql`
 export const Order = () => {
   const params = useParams<IParams>();
   const { data: userData } = useMe();
+  const [editOrderMutation] = useMutation<editOrder, editOrderVariables>(
+    EDIT_ORDER_MUTATION
+  );
   const { data, subscribeToMore } = useQuery<getOrder, getOrderVariables>(
     GET_ORDER_QUERY,
     {
@@ -81,6 +93,17 @@ export const Order = () => {
     }
   }, [data]);
 
+  const onBtnClick = (newStatus: OrderStatus) => {
+    editOrderMutation({
+      variables: {
+        input: {
+          id: +params.id,
+          status: newStatus,
+        },
+      },
+    });
+  };
+
   return (
     <div className='container mt-20 flex justify-center'>
       <Helmet>
@@ -120,11 +143,27 @@ export const Order = () => {
           {userData?.me.role === UserRole.Owner && (
             <Fragment>
               {data?.getOrder.order?.status === OrderStatus.Pending && (
-                <button className='btn'>Accept Order</button>
+                <button
+                  className='btn'
+                  onClick={() => onBtnClick(OrderStatus.Cooking)}
+                >
+                  Accept Order
+                </button>
               )}
               {data?.getOrder.order?.status === OrderStatus.Cooking && (
-                <button className='btn'>Order Cooked</button>
+                <button
+                  className='btn'
+                  onClick={() => onBtnClick(OrderStatus.Cooked)}
+                >
+                  Order Cooked
+                </button>
               )}
+              {data?.getOrder.order?.status !== OrderStatus.Pending &&
+                data?.getOrder.order?.status !== OrderStatus.Cooking && (
+                  <span className=' text-center mt-5 mb-3  text-2xl text-lime-600'>
+                    Status: {data?.getOrder.order?.status}
+                  </span>
+                )}
             </Fragment>
           )}
         </div>
