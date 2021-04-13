@@ -2,11 +2,17 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { isLoggedInVar } from '../apollo';
+import { LOCALSTORAGE_TOKEN } from '../constants';
 import { useMe } from '../hooks/useMe';
 import nuberLogo from '../images/logo.svg';
 
 export const Header: React.FC = () => {
   const { data } = useMe();
+  const onClickLogout = () => {
+    localStorage.removeItem(LOCALSTORAGE_TOKEN);
+    isLoggedInVar(false);
+  };
   return (
     <Fragment>
       {!data?.me.isVerified && (
@@ -24,6 +30,9 @@ export const Header: React.FC = () => {
               <FontAwesomeIcon icon={faUser} className='text-xl' />
               {data?.me.email}
             </Link>
+            <button onClick={onClickLogout} className='ml-2'>
+              Log out
+            </button>
           </span>
         </div>
       </header>

@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
-import { gql, useQuery } from '@apollo/client';
-import { useParams } from 'react-router';
+import React, { Fragment, useEffect } from 'react';
+import { gql, useQuery, useSubscription } from '@apollo/client';
+import { useHistory, useParams } from 'react-router';
 import {
   DISH_FRAGMENT,
+  FULL_ORDER_FRAGMENT,
   ORDERS_FRAGMENT,
   RESTAURANT_FRAGMENT,
 } from '../../fragments';
@@ -24,6 +25,7 @@ import {
   VictoryTheme,
   VictoryLabel,
 } from 'victory';
+import { pendingOrders } from '../../__generated/pendingOrders';
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($myRestaurantInput: MyRestaurantInput!) {
@@ -46,6 +48,15 @@ export const MY_RESTAURANT_QUERY = gql`
   ${ORDERS_FRAGMENT}
 `;
 
+const PENDING_ORDERS_SUBSCRIPTION = gql`
+  subscription pendingOrders {
+    pendingOrders {
+      ...FullOrderParts
+    }
+  }
+  ${FULL_ORDER_FRAGMENT}
+`;
+
 interface IParams {
   id: string;
 }
@@ -63,22 +74,16 @@ export const MyRestaurant = () => {
     }
   );
 
-  console.log(data);
+  const { data: subscriptionData } = useSubscription<pendingOrders>(
+    PENDING_ORDERS_SUBSCRIPTION
+  );
+  const history = useHistory();
+  useEffect(() => {
+    if (subscriptionData?.pendingOrders.id) {
+      history.push(`/orders/${subscriptionData.pendingOrders.id}`);
+    }
+  }, [subscriptionData]);
 
-  const chartData = [
-    { x: 1, y: 3000 },
-    { x: 2, y: 1500 },
-    { x: 3, y: 4250 },
-    { x: 4, y: 2300 },
-    { x: 5, y: 7150 },
-    { x: 6, y: 4830 },
-    { x: 7, y: 6400 },
-    { x: 8, y: 5420 },
-    { x: 9, y: 3200 },
-    { x: 10, y: 6500 },
-    { x: 11, y: 1800 },
-    { x: 12, y: 3300 },
-  ];
   return (
     <Fragment>
       <div

@@ -1,13 +1,16 @@
 import { gql, useQuery, useSubscription } from '@apollo/client';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
+import { useMe } from '../hooks/useMe';
 import { getOrder, getOrderVariables } from '../__generated/getOrder';
+import { OrderStatus, UserRole } from '../__generated/globalTypes';
 import {
   orderUpdates,
   orderUpdatesVariables,
 } from '../__generated/orderUpdates';
+import { pendingOrders } from '../__generated/pendingOrders';
 
 interface IParams {
   id: string;
@@ -37,7 +40,7 @@ const ORDER_SUBSCRIPTION = gql`
 
 export const Order = () => {
   const params = useParams<IParams>();
-
+  const { data: userData } = useMe();
   const { data, subscribeToMore } = useQuery<getOrder, getOrderVariables>(
     GET_ORDER_QUERY,
     {
@@ -109,9 +112,21 @@ export const Order = () => {
               {data?.getOrder.order?.driver?.email || 'Not yet.'}
             </span>
           </div>
-          <span className=' text-center mt-5 mb-3  text-2xl text-lime-600'>
-            Status: {data?.getOrder.order?.status}
-          </span>
+          {userData?.me.role === UserRole.Client && (
+            <span className=' text-center mt-5 mb-3  text-2xl text-lime-600'>
+              Status: {data?.getOrder.order?.status}
+            </span>
+          )}
+          {userData?.me.role === UserRole.Owner && (
+            <Fragment>
+              {data?.getOrder.order?.status === OrderStatus.Pending && (
+                <button className='btn'>Accept Order</button>
+              )}
+              {data?.getOrder.order?.status === OrderStatus.Cooking && (
+                <button className='btn'>Order Cooked</button>
+              )}
+            </Fragment>
+          )}
         </div>
       </div>
     </div>
