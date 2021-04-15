@@ -166,6 +166,31 @@ export const Order = () => {
                 )}
             </Fragment>
           )}
+          {userData?.me.role === UserRole.Delivery && (
+            <Fragment>
+              {data?.getOrder.order?.status === OrderStatus.Cooked && (
+                <button
+                  className='btn'
+                  onClick={() => onBtnClick(OrderStatus.PickedUp)}
+                >
+                  Picked Up
+                </button>
+              )}
+              {data?.getOrder.order?.status === OrderStatus.PickedUp && (
+                <button
+                  className='btn'
+                  onClick={() => onBtnClick(OrderStatus.Delivered)}
+                >
+                  Delivered
+                </button>
+              )}
+            </Fragment>
+          )}
+          {data?.getOrder.order?.status === OrderStatus.Delivered && (
+            <span className=' text-center mt-5 mb-3  text-2xl text-lime-600'>
+              Thank you for your service!
+            </span>
+          )}
         </div>
       </div>
     </div>
