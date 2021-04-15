@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import { gql, useMutation, useSubscription } from '@apollo/client';
 import { FULL_ORDER_FRAGMENT } from '../../fragments';
 import { coockedOrders } from '../../__generated/coockedOrders';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { takeOrder, takeOrderVariables } from '../../__generated/takeOrder';
 
 const COOCKED_ORDERS_SUBSCRIPTION = gql`
@@ -102,7 +102,7 @@ export const Dashboard = () => {
         },
         travelMode: google.maps.TravelMode.DRIVING,
       },
-      (result, status) => {
+      (result) => {
         directionsRenderer.setDirections(result);
       }
     );

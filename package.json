@@ -40,9 +40,11 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "tailwind:prodbuild":"cross-env NODE_ENV=production npm run tailwind:build",
     "tailwind:build": "tailwind build ./src/styles/tailwind.css -o ./src/styles/styles.css",
     "start": "npm run apollo:codegen & npm run tailwind:build & react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
+    "prebuild": "npm run tailwind:prodbuild",
     "test": "react-scripts test --verbose",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
@@ -76,6 +78,7 @@
   "devDependencies": {
     "@testing-library/cypress": "^7.0.5",
     "@types/googlemaps": "^3.43.3",
+    "cross-env": "^7.0.3",
     "mock-apollo-client": "^1.0.0"
   }
 }

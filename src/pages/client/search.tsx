@@ -33,7 +33,7 @@ export const Search: React.FC = () => {
   const [page, setPage] = useState(1);
   const location = useLocation();
   const history = useHistory();
-  const [queryCall, { loading, data, called }] = useLazyQuery<
+  const [queryCall, { loading, data }] = useLazyQuery<
     searchRestaurant,
     searchRestaurantVariables
   >(SEARCH_RESTAURANT);

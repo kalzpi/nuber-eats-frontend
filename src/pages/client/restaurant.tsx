@@ -1,11 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   restaurantQuery,
   restaurantQueryVariables,
-  restaurantQuery_restaurant_restaurant_menu_options,
 } from '../../__generated/restaurantQuery';
 import { Dish } from '../../components/dish';
 import { CreateOrderItemInput } from '../../__generated/globalTypes';
@@ -49,7 +48,7 @@ const CREATE_ORDER_MUTATION = gql`
 export const RestaurantDetail: React.FC = () => {
   const params = useParams<IRestaurantParams>();
 
-  const { data, loading } = useQuery<restaurantQuery, restaurantQueryVariables>(
+  const { data } = useQuery<restaurantQuery, restaurantQueryVariables>(
     RESTAURANT_QUERY,
     {
       variables: {
